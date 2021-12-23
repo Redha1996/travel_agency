@@ -18,18 +18,18 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label for="userEmail" class="form-label">Adresse email</label>
-                        <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp">
+                        <input required type="email" class="form-control" id="userEmail" aria-describedby="emailHelp">
                         <div id="emailHelp" class="form-text">Votre adresse email ne sera jamais donnée à quelqu'un
                             d'autre.
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="userName" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="userName">
+                        <input required type="text" class="form-control" id="userName">
                     </div>
                     <div class="mb-3">
                         <label for="userCountry" class="form-label">Pays dans lequel vous habitez</label>
-                        <select id="userCountry" name="userCountry" class="form-select" aria-label="Country selection">
+                        <select required id="userCountry" name="userCountry" class="form-select" aria-label="Country selection">
                             <option value="Afghanistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
                             <option value="Algeria">Algeria</option>
@@ -107,7 +107,7 @@
 
                     <div class="mb-3">
                         <label for="weatherExpectation" class="form-label">Vous souhaitez une destination</label>
-                        <select id="weatherExpectation" name="weatherExpectation" class="form-select"
+                        <select required id="weatherExpectation" name="weatherExpectation" class="form-select"
                                 aria-label="Weather expectation selection">
                             <option value="WARMER">plus chaude</option>
                             <option value="COLDER">plus froide</option>
@@ -117,7 +117,7 @@
                     <div class="mb-3 form-group">
                         <label for="minimumTemperatureDistance" class="form-label">De</label>
                         <div class="input-group">
-                            <input id="minimumTemperatureDistance" name="minimumTemperatureDistance" type="number"
+                            <input required id="minimumTemperatureDistance" name="minimumTemperatureDistance" type="number"
                                    class="form-control" placeholder="temperature" min="1" max="30">
                             <span class="input-group-text">°C</span>
                         </div>
