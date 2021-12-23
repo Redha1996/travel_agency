@@ -1,5 +1,7 @@
-package fr.lernejo.prediction;
+package fr.lernejo.prediction.service;
 
+import fr.lernejo.prediction.exception.UnknownCountryException;
+import fr.lernejo.prediction.utils.ClassPathFileLoader;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
@@ -18,7 +20,7 @@ public class TemperatureService {
     private final Map<CaseInsensitiveString, TemperatureGenerationData> temperatureDatasByCountry;
     private final Random random = new Random();
 
-    TemperatureService() {
+    public TemperatureService() {
         Stream<String> lines = new ClassPathFileLoader().readLines("countriesTempData.csv");
 
         temperatureDatasByCountry = lines

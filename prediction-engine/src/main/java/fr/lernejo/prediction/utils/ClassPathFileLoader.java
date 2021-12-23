@@ -1,4 +1,6 @@
-package fr.lernejo.prediction;
+package fr.lernejo.prediction.utils;
+
+import fr.lernejo.prediction.service.TemperatureService;
 
 import java.io.IOException;
 import java.io.InputStream;
