@@ -4,7 +4,6 @@ import fr.lernejo.travelsite.controllers.dto.InscriptionDto;
 import fr.lernejo.travelsite.controllers.dto.PredictionResponse;
 import fr.lernejo.travelsite.controllers.dto.TemperatureResponse;
 import fr.lernejo.travelsite.controllers.dto.TravelResponse;
-import fr.lernejo.travelsite.exception.UnknownCountryException;
 import fr.lernejo.travelsite.required.PredictionEngineClient;
 import fr.lernejo.travelsite.utils.PredictionUtil;
 import org.springframework.stereotype.Service;
@@ -66,8 +65,9 @@ public class PredictionService {
             predictionResponse = predictionEngineClient.prediction(country).clone().execute().body();
             return predictionResponse;
         } catch (IOException e) {
-            throw new UnknownCountryException(country);
+            e.printStackTrace();
         }
+        return new PredictionResponse(country, new ArrayList<>());
     }
 
     public void inscription(InscriptionDto inscriptionDto) {
