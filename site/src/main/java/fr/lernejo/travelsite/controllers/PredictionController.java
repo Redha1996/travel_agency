@@ -2,24 +2,30 @@ package fr.lernejo.travelsite.controllers;
 
 import fr.lernejo.travelsite.controllers.dto.InscriptionDto;
 import fr.lernejo.travelsite.controllers.dto.TravelResponse;
+import fr.lernejo.travelsite.service.PredictionService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class PredictionController {
 
-    private final List<InscriptionDto> inscriptionDtos = new ArrayList<>();
+    private final PredictionService predictionService;
+
+    public PredictionController(PredictionService predictionService) {
+        this.predictionService = predictionService;
+    }
+
 
     @PostMapping("/inscription")
     public void inscription(@RequestBody InscriptionDto inscriptionDto) {
-        inscriptionDtos.add(inscriptionDto);
+        predictionService.inscription(inscriptionDto);
     }
 
     @GetMapping("/travels")
-    public List<TravelResponse> inscription(@RequestParam String userName) {
-        return List.of(new TravelResponse("MA", 44), new TravelResponse("FR", 15));
+    public List<TravelResponse> prediction(@RequestParam String userName) {
+        return predictionService.predictionMethod(userName);
     }
+
 }
