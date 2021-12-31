@@ -59,7 +59,7 @@ public class PredictionService {
     public PredictionResponse prediction(String country) {
         PredictionResponse predictionResponse = null;
         try {
-            predictionResponse = predictionEngineClient.prediction(country).execute().body();
+            predictionResponse = predictionEngineClient.prediction(country).clone().execute().body();
             return predictionResponse;
         } catch (IOException e) {
             e.printStackTrace();
