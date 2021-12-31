@@ -3,7 +3,9 @@ package fr.lernejo.travelsite.service;
 import fr.lernejo.travelsite.controllers.dto.InscriptionDto;
 import fr.lernejo.travelsite.controllers.dto.PredictionResponse;
 import fr.lernejo.travelsite.controllers.dto.TemperatureResponse;
+import fr.lernejo.travelsite.controllers.dto.TravelResponse;
 import fr.lernejo.travelsite.required.PredictionEngineClient;
+import fr.lernejo.travelsite.utils.PredictionUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,18 +19,20 @@ import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class PredictionServiceTest {
+
     @Mock
     private PredictionEngineClient predictionEngineClient;
     private PredictionService predictionService;
-    private InscriptionDto inscriptionDto;
+    private InscriptionDto inscriptionDtoWarmer;
+    private InscriptionDto inscriptionDtoColder;
 
     List<TemperatureResponse> temperatureResponseList =
-        List.of(new TemperatureResponse("2021-01-01", 15), new TemperatureResponse("2021-01-02", 15));
+        List.of(new TemperatureResponse("2021-01-01", 5), new TemperatureResponse("2021-01-02", 20));
     PredictionResponse predictionResponse = new PredictionResponse("France", temperatureResponseList);
 
     @Test
     void prediction_simple_test() {
-        predictionService.inscription(inscriptionDto);
+        predictionService.inscription(inscriptionDtoWarmer);
         Mockito.when(predictionEngineClient.prediction(Mockito.anyString())).thenReturn(Calls.response(predictionResponse));
         PredictionResponse predictionResponse = predictionService.prediction("France");
         boolean actualCountry = predictionResponse.getCountry().equals("France");
@@ -37,19 +41,38 @@ class PredictionServiceTest {
         Assertions.assertTrue(actualTempSize);
     }
 
-//    @Test
-//    void prediction_complete_test() {
-//        predictionService.inscription(inscriptionDto);
-//        Mockito.when(predictionEngineClient.prediction(Mockito.anyString())).thenReturn(Calls.response(predictionResponse));
-//        Mockito.when(predictionService.getPredictions()).thenReturn(predictionResponses);
-//        List<TravelResponse> travelResponses = predictionService.predictionMethod(inscriptionDto.userName());
-//        boolean actual = travelResponses.get(0).temperature() < 10;
-//        Assertions.assertTrue(actual);
-//    }
+    @Test
+    void getPredictions() {
+        Mockito.when(predictionEngineClient.prediction(Mockito.anyString())).thenReturn(Calls.response(predictionResponse));
+        List<PredictionResponse> predictionResponses = predictionService.getPredictions();
+        boolean actual = predictionResponses.size() == 72;
+        Assertions.assertTrue(actual);
+    }
+
+    @Test
+    void prediction_warmer_test() {
+        predictionService.inscription(inscriptionDtoWarmer);
+        Mockito.when(predictionEngineClient.prediction(Mockito.anyString())).thenReturn(Calls.response(predictionResponse));
+        List<TravelResponse> travelResponses = predictionService.predictionMethod(inscriptionDtoWarmer.userName());
+        System.out.println(travelResponses.size());
+        boolean actual = travelResponses.get(0).temperature() > inscriptionDtoWarmer.minimumTemperatureDistance();
+        Assertions.assertTrue(actual);
+    }
+
+    @Test
+    void prediction_colder_test() {
+        predictionService.inscription(inscriptionDtoColder);
+        Mockito.when(predictionEngineClient.prediction(Mockito.anyString())).thenReturn(Calls.response(predictionResponse));
+        List<TravelResponse> travelResponses = predictionService.predictionMethod(inscriptionDtoColder.userName());
+        System.out.println(travelResponses.size());
+        boolean actual = travelResponses.get(0).temperature() < inscriptionDtoColder.minimumTemperatureDistance();
+        Assertions.assertTrue(actual);
+    }
 
     @BeforeEach
     void setup() {
-        predictionService = new PredictionService(predictionEngineClient);
-        inscriptionDto = new InscriptionDto("yassine@gmail.com", "yassine", "France", "COLDER", 10);
+        predictionService = new PredictionService(predictionEngineClient, new PredictionUtil());
+        inscriptionDtoWarmer = new InscriptionDto("test@gmail.com", "test", "France", "WARMER", 10);
+        inscriptionDtoColder = new InscriptionDto("redha@gmail.com", "redha", "France", "COLDER", 20);
     }
 }

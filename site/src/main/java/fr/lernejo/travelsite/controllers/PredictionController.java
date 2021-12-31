@@ -3,6 +3,7 @@ package fr.lernejo.travelsite.controllers;
 import fr.lernejo.travelsite.controllers.dto.InscriptionDto;
 import fr.lernejo.travelsite.controllers.dto.TravelResponse;
 import fr.lernejo.travelsite.service.PredictionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class PredictionController {
 
 
     @PostMapping("/inscription")
+    @ResponseStatus(HttpStatus.CREATED)
     public void inscription(@RequestBody InscriptionDto inscriptionDto) {
         predictionService.inscription(inscriptionDto);
     }
