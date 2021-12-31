@@ -38,7 +38,7 @@ class PredictionControllerTest {
     void api_temperature_expectation(@Autowired MockMvc mockMvc) throws Exception {
         mockMvc
             .perform(MockMvcRequestBuilders.get("/api/travels?userName=redha"))
-            .andExpect(MockMvcResultMatchers.status().isOk());
+            .andExpect(MockMvcResultMatchers.status().isExpectationFailed());
     }
 
 }

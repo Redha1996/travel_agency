@@ -4,6 +4,7 @@ import fr.lernejo.travelsite.controllers.dto.InscriptionDto;
 import fr.lernejo.travelsite.controllers.dto.PredictionResponse;
 import fr.lernejo.travelsite.controllers.dto.TemperatureResponse;
 import fr.lernejo.travelsite.controllers.dto.TravelResponse;
+import fr.lernejo.travelsite.exception.UnknownCountryException;
 import fr.lernejo.travelsite.required.PredictionEngineClient;
 import fr.lernejo.travelsite.utils.PredictionUtil;
 import org.springframework.stereotype.Service;
@@ -35,18 +36,19 @@ public class PredictionService {
         return predictionResponses;
     }
 
-    public List<TravelResponse> predictionMethod(String userName) {
+    public List<TravelResponse> predictionMethod(String userName, List<PredictionResponse> predictions) {
         Map<String, Double> countryAverages = new HashMap<>();
         InscriptionDto inscriptionDto = getInscription(userName);
         if (inscriptionDto == null) return new ArrayList<>();
         else {
             double homeTemperature = prediction(inscriptionDto.userCountry()).getTemperatures()
                 .stream().mapToDouble(TemperatureResponse::getTemperature).average().orElseGet(() -> 0d);
-            getPredictions().
+            predictions.
                 forEach(el -> countryAverages.put(el.getCountry(), el.getTemperatures().stream()
                     .mapToDouble(TemperatureResponse::getTemperature).average().orElseGet(() -> 0d)));
-            if (inscriptionDto.weatherExpectation().equals("COLDER"))
+            if (inscriptionDto.weatherExpectation().equals("COLDER")) {
                 return predictionUtil.resultColder(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature, inscriptionDto.userCountry());
+            }
             return inscriptionDto.weatherExpectation().equals("WARMER") ?
                 predictionUtil.resultWarmer(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature, inscriptionDto.userCountry()) : new ArrayList<>();
         }
@@ -64,9 +66,8 @@ public class PredictionService {
             predictionResponse = predictionEngineClient.prediction(country).clone().execute().body();
             return predictionResponse;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new UnknownCountryException(country);
         }
-        return new PredictionResponse(country, new ArrayList<>());
     }
 
     public void inscription(InscriptionDto inscriptionDto) {

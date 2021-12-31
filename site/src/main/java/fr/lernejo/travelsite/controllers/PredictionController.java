@@ -27,7 +27,7 @@ public class PredictionController {
 
     @GetMapping("/travels")
     public List<TravelResponse> prediction(@RequestParam String userName) {
-        return predictionService.predictionMethod(userName);
+        return predictionService.predictionMethod(userName,predictionService.getPredictions());
     }
 
 }
