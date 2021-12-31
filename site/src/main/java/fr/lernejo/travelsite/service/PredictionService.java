@@ -40,13 +40,17 @@ public class PredictionService {
         InscriptionDto inscriptionDto = getInscription(userName);
         if (inscriptionDto == null) return new ArrayList<>();
         else {
+            double homeTemperature = prediction(inscriptionDto.userCountry()).getTemperatures()
+                .stream().mapToDouble(TemperatureResponse::getTemperature).average().orElseGet(() -> 0d);
             getPredictions().
                 forEach(el -> countryAverages.put(el.getCountry(), el.getTemperatures().stream()
                     .mapToDouble(TemperatureResponse::getTemperature).average().orElseGet(() -> 0d)));
+            System.out.println("countryAverages " + countryAverages);
+            System.out.println("homeTemperature " + homeTemperature);
             if (inscriptionDto.weatherExpectation().equals("COLDER"))
-                return predictionUtil.resultColder(countryAverages, inscriptionDto.minimumTemperatureDistance());
+                return predictionUtil.resultColder(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature);
             return inscriptionDto.weatherExpectation().equals("WARMER") ?
-                predictionUtil.resultWarmer(countryAverages, inscriptionDto.minimumTemperatureDistance()) : new ArrayList<>();
+                predictionUtil.resultWarmer(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature) : new ArrayList<>();
         }
     }
 
@@ -72,5 +76,4 @@ public class PredictionService {
             return;
         inscriptionDtos.add(inscriptionDto);
     }
-
 }

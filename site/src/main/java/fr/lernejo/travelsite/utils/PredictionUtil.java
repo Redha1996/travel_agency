@@ -34,15 +34,18 @@ public class PredictionUtil {
         return Double.parseDouble(df2.format(val));
     }
 
-    public List<TravelResponse> resultColder(Map<String, Double> countryAverages, Integer minimumTemperatureDistance) {
-        countryAverages.entrySet().stream().filter(el -> el.getValue() < minimumTemperatureDistance)
+    public List<TravelResponse> resultColder(Map<String, Double> countryAverages, Integer minimumTemperatureDistance, double homeTemperature) {
+        double diff = homeTemperature - minimumTemperatureDistance;
+        countryAverages.entrySet().stream().filter(el -> el.getValue() <= diff)
             .forEach(el -> travelResponses.add(new TravelResponse(el.getKey(), roundTo2Decimals(el.getValue()))));
         return travelResponses;
     }
 
-    public List<TravelResponse> resultWarmer(Map<String, Double> countryAverages, Integer minimumTemperatureDistance) {
-        countryAverages.entrySet().stream().filter(el -> el.getValue() > minimumTemperatureDistance)
+    public List<TravelResponse> resultWarmer(Map<String, Double> countryAverages, Integer minimumTemperatureDistance, double homeTemperature) {
+        double diff = homeTemperature + minimumTemperatureDistance;
+        countryAverages.entrySet().stream().filter(el -> el.getValue() >= diff)
             .forEach(el -> travelResponses.add(new TravelResponse(el.getKey(), roundTo2Decimals(el.getValue()))));
         return travelResponses;
     }
+
 }

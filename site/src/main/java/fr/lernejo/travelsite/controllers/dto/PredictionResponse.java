@@ -1,6 +1,7 @@
 package fr.lernejo.travelsite.controllers.dto;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 public class PredictionResponse {
     private final String country;
@@ -19,4 +20,11 @@ public class PredictionResponse {
         return temperatures;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PredictionResponse.class.getSimpleName() + "[", "]")
+            .add("country='" + country + "'")
+            .add("temperatures=" + temperatures)
+            .toString();
+    }
 }

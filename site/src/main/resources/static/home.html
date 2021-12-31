@@ -24,7 +24,7 @@
     function updateDestinations(httpRequest)  {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             const status = httpRequest.status;
-            let content;
+            let content = "";
             if(status === 200) {
                 const response = JSON.parse(httpRequest.responseText);
                 content = "<div id='destination_table'>Voici les destinations qui correspondent à vos critères:\n";
