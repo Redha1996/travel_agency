@@ -45,12 +45,10 @@ public class PredictionService {
             getPredictions().
                 forEach(el -> countryAverages.put(el.getCountry(), el.getTemperatures().stream()
                     .mapToDouble(TemperatureResponse::getTemperature).average().orElseGet(() -> 0d)));
-            System.out.println("countryAverages " + countryAverages);
-            System.out.println("homeTemperature " + homeTemperature);
             if (inscriptionDto.weatherExpectation().equals("COLDER"))
-                return predictionUtil.resultColder(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature);
+                return predictionUtil.resultColder(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature, inscriptionDto.userCountry());
             return inscriptionDto.weatherExpectation().equals("WARMER") ?
-                predictionUtil.resultWarmer(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature) : new ArrayList<>();
+                predictionUtil.resultWarmer(countryAverages, inscriptionDto.minimumTemperatureDistance(), homeTemperature, inscriptionDto.userCountry()) : new ArrayList<>();
         }
     }
 
