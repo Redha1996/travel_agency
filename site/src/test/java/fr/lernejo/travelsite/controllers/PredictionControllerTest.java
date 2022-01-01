@@ -34,11 +34,11 @@ class PredictionControllerTest {
             .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
-    @Test
-    void api_temperature_expectation(@Autowired MockMvc mockMvc) throws Exception {
-        mockMvc
-            .perform(MockMvcRequestBuilders.get("/api/travels?userName=redha"))
-            .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+//    @Test
+//    void api_temperature_expectation(@Autowired MockMvc mockMvc) throws Exception {
+//        mockMvc
+//            .perform(MockMvcRequestBuilders.get("/api/travels?userName=redha"))
+//            .andExpect(MockMvcResultMatchers.status().isOk());
+//    }
 
 }
