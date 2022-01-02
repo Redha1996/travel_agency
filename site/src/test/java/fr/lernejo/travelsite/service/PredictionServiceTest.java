@@ -91,11 +91,11 @@ class PredictionServiceTest {
     }
 
     private void generatePredictionResponse() {
-        for (int i = 0; i < countries.size(); i++) {
+        for (String country : countries) {
             double random = new Random().nextDouble();
             List<TemperatureResponse> temperatureResponseList =
                 List.of(new TemperatureResponse("2021-01-01", (random * (46) + 10)), new TemperatureResponse("2021-01-02", (random * (46) + 10)));
-            PredictionResponse predictionResponse = new PredictionResponse(countries.get(i), temperatureResponseList);
+            PredictionResponse predictionResponse = new PredictionResponse(country, temperatureResponseList);
             predictionResponses.add(predictionResponse);
         }
     }
