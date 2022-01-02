@@ -48,7 +48,7 @@ class PredictionServiceTest {
     void getPredictions() {
         Mockito.when(predictionEngineClient.prediction(Mockito.anyString())).thenReturn(Calls.response(predictionResponse));
         List<PredictionResponse> predictionResponses = predictionService.getPredictions();
-        boolean actual = predictionResponses.size() == 72;
+        boolean actual = predictionResponses.size() == countries.size();
         Assertions.assertTrue(actual);
     }
 
@@ -141,7 +141,6 @@ class PredictionServiceTest {
         "Comoros",
         "Congo",
         "Costa Rica",
-        "Côte d’Ivoire",
         "Croatia",
         "Cuba",
         "Cyprus",
