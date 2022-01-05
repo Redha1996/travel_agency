@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -30,7 +32,7 @@ public class PredictionUtil {
     }
 
     public double roundTo2Decimals(double val) {
-        DecimalFormat df2 = new DecimalFormat("###.##");
+        DecimalFormat df2 = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
         return Double.parseDouble(df2.format(val));
     }
 
